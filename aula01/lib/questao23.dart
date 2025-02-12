@@ -7,7 +7,7 @@ void main() {
   String nome = stdin.readLineSync()!;
 
   try {
-    File file = File("aula01/lib/questao23.txt");
+    File file = File("Aula01/lib/questao23.txt");
     file.writeAsStringSync("Bem vindo, $nome!");
     print("Arquivo salvo com sucesso!");
   } catch (e) {
@@ -15,7 +15,7 @@ void main() {
   }
 
   try {
-    File file = File("aula01/lib/questao23.txt");
+    File file = File("Aula01/lib/questao23.txt");
     String conteudo = file.readAsStringSync();
     print("Conteúdo do arquivo (modicado em = ${file.lastModifiedSync()}): $conteudo");
   } catch (e) {

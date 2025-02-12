@@ -1,6 +1,6 @@
 // 20.Mixin: Crie um mixin chamado Volante e aplique-o a uma classe Carro.
 
-// Notes: Em Dart, um mixin é uma forma de reutilizar código de várias classes, 
+// notesbyme: Em Dart, um mixin é uma forma de reutilizar código de várias classes, 
 // permitindo que você adicione funcionalidades específicas a uma classe
 // sem usar herança múltipla.
 

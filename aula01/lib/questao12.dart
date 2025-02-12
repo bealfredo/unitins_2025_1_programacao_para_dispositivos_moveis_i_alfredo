@@ -1,3 +1,6 @@
+// 12. Função com Valor Padrão: Faça uma função que receba um nome e exiba
+// uma saudação. Se nenhum nome for passado, use "Visitante"
+
 import "dart:io";
 
 void main() {
