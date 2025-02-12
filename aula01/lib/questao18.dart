@@ -1,7 +1,7 @@
 // 18. Encapsulamento: Modifique a classe Carro para que modelo seja privado e
 // crie métodos getter e setter.
 
-// note: para restringir realmente o acesso é necessário separá-los em arquivos ou bibliotecas diferentes
+// notebyme: para restringir realmente o acesso é necessário separá-los em arquivos ou bibliotecas diferentes
 
 class Carro {
   String _marca;
