@@ -1,135 +1,76 @@
-import 'package:avaliacao01_resenhal/navigation_teste.dart';
+import 'package:avaliacao01_resenhal/resenha_app.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  // runApp( ListaComprasApp());
-
   runApp(NavigationBarApp());
 }
 
-class ListaComprasApp extends StatelessWidget {
-  const ListaComprasApp({super.key});
+
+// Navigation
+
+class NavigationBarApp extends StatelessWidget {
+  const NavigationBarApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-    home: FormularioComprasScaffold(),
-  );
+    return MaterialApp(theme: ThemeData(useMaterial3: true), home: const NavigationExample());
   }
 }
 
-class FormularioComprasScaffold extends StatelessWidget {
-  const FormularioComprasScaffold({super.key});
+class NavigationExample extends StatefulWidget {
+  const NavigationExample({super.key});
+
+  @override
+  State<NavigationExample> createState() => _NavigationExampleState();
+}
+
+class _NavigationExampleState extends State<NavigationExample> {
+  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cadastro Produto'),
-        backgroundColor: Colors.redAccent,        
-        
-      ),
-      body: Column(
-        children: [
-            Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-              TextField(
-                decoration: InputDecoration(
-                labelText: 'Nome',
-                hintText: 'Ex: Arroz',
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                labelText: 'Quantidade',
-                hintText: 'Ex: 5',
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                labelText: 'Medida',
-                hintText: 'Ex: 500kg',
-                ),
-              ),
-              ],
-            ),
-            ),
-          ElevatedButton(
-            onPressed: (){},
-            child: Text('Salvar'),
-          )
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        indicatorColor: Colors.redAccent,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          // NavigationDestination(
+          //   selectedIcon: Icon(Icons.home),
+          //   icon: Icon(Icons.home_outlined),
+          //   label: 'Home',
+          // ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Badge(child: Icon(Icons.star)),
+            label: 'Resenhas de filmes',
+          ),
         ],
       ),
+      body:
+          <Widget>[
+            /// Resenhas de filmes page
+            ResenhaApp(),
+
+
+            /// Home page
+            Card(
+              shadowColor: Colors.transparent,
+              margin: const EdgeInsets.all(8.0),
+              child: SizedBox.expand(
+                child: Center(child: Text('Another page', style: theme.textTheme.titleLarge)),
+              ),
+            ),
+          ][currentPageIndex],
     );
   }
 }
-
-class ListaComprasScaffold extends StatelessWidget {
-  const ListaComprasScaffold({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Lista de Compras'),
-        backgroundColor: Colors.redAccent,        
-        
-      ),
-      body: ListaCompras(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        backgroundColor: Colors.redAccent[100],
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class ListaCompras extends StatelessWidget {
-  const ListaCompras({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ItemListaCompras(Produto('Arroz', '5kg', 1)),
-        ItemListaCompras(Produto('Feijão', '1kg', 2)),
-        ItemListaCompras(Produto('Macarrão', '500g', 3)),
-      ],
-    );
-  }
-}
-
-class ItemListaCompras extends StatelessWidget {
-  final Produto produto;
-
-  const ItemListaCompras(this.produto, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(produto.nome),
-        subtitle: Text('${produto.medida} | ${produto.quantidade.toString()}'),
-        leading: Icon(Icons.shopping_cart),
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: (){},
-        ),
-      ),
-    );
-  }
-}
-
-class Produto {
-  String nome;
-  int quantidade;
-  String medida;
-
-  Produto(this.nome, this.medida, this.quantidade);
-}
-
