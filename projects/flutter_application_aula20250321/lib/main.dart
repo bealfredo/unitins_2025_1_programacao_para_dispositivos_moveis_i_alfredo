@@ -1,127 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_aula20250321/navigationTeste.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: ListaComprasApp(),
-  ));
+  // runApp( ListaComprasApp());
+
+  runApp(NavigationBarApp());
 }
 
-class ListaComprasApp extends StatefulWidget {
+class ListaComprasApp extends StatelessWidget {
+  const ListaComprasApp({super.key});
+
   @override
-  _ListaComprasAppState createState() => _ListaComprasAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+    home: FormularioComprasScaffold(),
+  );
+  }
 }
 
-class _ListaComprasAppState extends State<ListaComprasApp> {
-  final TextEditingController _itemController = TextEditingController();
-  final TextEditingController _valorController = TextEditingController();
-  List<Produto> produtos = [
-    Produto('Arroz', 10),
-    Produto('Feijão', 5),
-    Produto('Cenoura', 3.75, icon: Icons.fastfood),
-  ];
+class FormularioComprasScaffold extends StatelessWidget {
+  const FormularioComprasScaffold({super.key});
 
-  void _adicionarItem() {
-    if (_itemController.text.isNotEmpty && _valorController.text.isNotEmpty) {
-      try {
-        double valor = double.parse(_valorController.text);
-        setState(() {
-          produtos.add(Produto(_itemController.text, valor));
-          _itemController.clear();
-          _valorController.clear();
-        });
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Valor inválido!')),
-        );
-      }
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Cadastro Produto'),
+        backgroundColor: Colors.redAccent,        
+        
+      ),
+      body: Column(
+        children: [
+            Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+              TextField(
+                decoration: InputDecoration(
+                labelText: 'Nome',
+                hintText: 'Ex: Arroz',
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                decoration: InputDecoration(
+                labelText: 'Quantidade',
+                hintText: 'Ex: 5',
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                decoration: InputDecoration(
+                labelText: 'Medida',
+                hintText: 'Ex: 500kg',
+                ),
+              ),
+              ],
+            ),
+            ),
+          ElevatedButton(
+            onPressed: (){},
+            child: Text('Salvar'),
+          )
+        ],
+      ),
+    );
   }
+}
+
+class ListaComprasScaffold extends StatelessWidget {
+  const ListaComprasScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de Compras'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.redAccent,        
+        
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TextField(
-                    controller: _itemController,
-                    decoration: InputDecoration(
-                      labelText: 'Insira o item',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: TextField(
-                    controller: _valorController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Valor',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: _adicionarItem,
-                  child: Text('Adicionar'),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: produtos.length,
-              itemBuilder: (context, index) {
-                return ItemLista(produtos[index]);
-              },
-            ),
-          ),
-        ],
+      body: ListaCompras(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        backgroundColor: Colors.redAccent[100],
+        child: Icon(Icons.add),
       ),
     );
   }
+}
+
+class ListaCompras extends StatelessWidget {
+  const ListaCompras({super.key});
 
   @override
-  void dispose() {
-    _itemController.dispose();
-    _valorController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ItemListaCompras(Produto('Arroz', '5kg', 1)),
+        ItemListaCompras(Produto('Feijão', '1kg', 2)),
+        ItemListaCompras(Produto('Macarrão', '500g', 3)),
+      ],
+    );
   }
 }
 
-class ItemLista extends StatelessWidget {
+class ItemListaCompras extends StatelessWidget {
   final Produto produto;
-  
-  const ItemLista(this.produto, {super.key});
+
+  const ItemListaCompras(this.produto, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Icon(produto.icon),
         title: Text(produto.nome),
-        subtitle: Text('R\$ ${produto.valor.toStringAsFixed(2)}'),
+        subtitle: Text('${produto.medida} | ${produto.quantidade.toString()}'),
+        leading: Icon(Icons.shopping_cart),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: (){},
+        ),
       ),
     );
   }
 }
 
 class Produto {
-  final String nome;
-  final double valor;
-  IconData icon;
+  String nome;
+  int quantidade;
+  String medida;
 
-  Produto(this.nome, this.valor, {this.icon = Icons.shopping_cart});
+  Produto(this.nome, this.medida, this.quantidade);
 }
+
