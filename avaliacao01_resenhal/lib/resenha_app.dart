@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -11,56 +12,6 @@ class ResenhaApp extends StatelessWidget {
     return MaterialApp(
     home: ListaResenhasScaffold(),
   );
-  }
-}
-
-class FormularioComprasScaffold extends StatelessWidget {
-  const FormularioComprasScaffold({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Cadastro Produto'),
-        backgroundColor: Colors.redAccent,        
-        
-      ),
-      body: Column(
-        children: [
-            Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-              TextField(
-                decoration: InputDecoration(
-                labelText: 'Nome',
-                hintText: 'Ex: Arroz',
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                labelText: 'Quantidade',
-                hintText: 'Ex: 5',
-                ),
-              ),
-              SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(
-                labelText: 'Medida',
-                hintText: 'Ex: 500kg',
-                ),
-              ),
-              ],
-            ),
-            ),
-          ElevatedButton(
-            onPressed: (){},
-            child: Text('Salvar'),
-          )
-        ],
-      ),
-    );
   }
 }
 
@@ -217,3 +168,153 @@ class Resenha {
 //   "comentario": "Filme incrível, com uma trilha sonora maravilhosa!",
 //   "createdAt": "2024-03-28T14:30:00Z"
 // }
+
+// Lista de gêneros
+final List<String> generos = [
+  'Ação',
+  'Anime',
+  'Asiáticos',
+  'Brasileiros',
+  'Britânicos',
+  'Ciência e natureza',
+  'Comédia',
+  'Drama',
+  'Esportes',
+  'EUA',
+  'Ficção científica e fantasia',
+  'Mistério',
+  'Mulheres em ação',
+  'Novelas',
+  'Para as crianças',
+  'Policiais',
+  'Reality e talk shows',
+  'Romance',
+  'Séries documentais',
+  'Teen',
+  'Terror',
+  'Outro'
+];
+
+// Formulário addicionar resenha
+
+class FormularioAddResenhaScaffold extends StatelessWidget {
+  const FormularioAddResenhaScaffold({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Adicionar Resenha'),
+        backgroundColor: Colors.redAccent,        
+        
+      ),
+      body: Column(
+        children: [
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                    labelText: 'Título',
+                    hintText: 'Ex: Interestelar',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                    labelText: 'Diretor',
+                    hintText: 'Ex: Christopher Nolan',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: 'Gênero',
+                      hintText: 'Selecione',
+                    ),
+                    items: generos.map((String value) {
+                      return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      // Lógica ao mudar o gênero
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                    labelText: 'Sinopse',
+                    hintText: 'Informe a sinopse do filme',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                    labelText: 'Usuário',
+                    hintText: 'Informe seu nome de usuário',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                    TextFormField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                    ],
+                    decoration: InputDecoration(
+                      labelText: 'Nota',
+                      hintText: 'Informe a nota do filme (máximo 10)',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                      return 'Informe a nota';
+                      }
+                      final nota = double.tryParse(value);
+                      if (nota == null) {
+                      return 'Valor inválido';
+                      }
+                      if (nota > 10) {
+                      return 'A nota deve ser no máximo 10';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                    labelText: 'Comentário',
+                    hintText: 'Informe sua opinião sobre o filme',
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2100),
+                      );
+                      // Adicione a lógica para atualizar o estado com a data selecionada
+                    },
+                    child: AbsorbPointer(
+                      child: TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Data de Lançamento',
+                        hintText: 'Selecione a data',
+                      ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ElevatedButton(
+            onPressed: (){},
+            child: Text('Salvar'),
+          )
+        ],
+      ),
+    );
+  }
+}

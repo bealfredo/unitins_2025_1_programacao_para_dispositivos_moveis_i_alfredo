@@ -50,18 +50,20 @@ class _NavigationExampleState extends State<NavigationExample> {
             icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
+
           NavigationDestination(
             icon: Badge(child: Icon(Icons.star)),
             label: 'Resenhas de filmes',
+          ),
+
+          NavigationDestination(
+            icon: Badge(child: Icon(Icons.add)),
+            label: 'Add'
           ),
         ],
       ),
       body:
           <Widget>[
-            /// Resenhas de filmes page
-            ResenhaApp(),
-
-
             /// Home page
             Card(
               shadowColor: Colors.transparent,
@@ -70,6 +72,13 @@ class _NavigationExampleState extends State<NavigationExample> {
                 child: Center(child: Text('Another page', style: theme.textTheme.titleLarge)),
               ),
             ),
+
+
+            /// Resenhas de filmes page
+            ResenhaApp(),
+
+            /// Add page
+            FormularioAddResenhaScaffold()
           ][currentPageIndex],
     );
   }
