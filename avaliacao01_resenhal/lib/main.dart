@@ -52,6 +52,12 @@ class _NavigationExampleState extends State<NavigationExample> {
           ),
 
           NavigationDestination(
+            icon: Badge(child: Icon(Icons.photo)),
+            label: 'Mídias',
+          ),
+
+
+          NavigationDestination(
             icon: Badge(child: Icon(Icons.star)),
             label: 'Resenhas de filmes',
           ),
@@ -73,6 +79,8 @@ class _NavigationExampleState extends State<NavigationExample> {
               ),
             ),
 
+            /// Mídias page
+            ListaMidiasScaffold(),
 
             /// Resenhas de filmes page
             ResenhaApp(),
